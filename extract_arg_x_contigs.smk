@@ -1,3 +1,14 @@
+import os
+path1 = "amr_detection/alignment_bam"
+path2 = "amr_detection/arg_reads"
+path3 = "amr_detection/arg_reads.x.contigs"
+path4 = "amr_detection/arg_contigs"
+paths = [path1,path2, path3, path4]
+for path in paths:
+    isExist = os.path.exists(path)
+    if not isExist:
+        os.makedirs(path)
+
 SAMPLES,=glob_wildcards("amr_detection/{sample}.amr.alignment.sam")
 rule all:
     input:expand("amr_detection/arg_contigs/{sample}.arg_contigs.fa", sample=SAMPLES)

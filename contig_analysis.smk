@@ -7,6 +7,10 @@ if not os.path.isdir(path):
     os.mkdir(path)
 if not os.path.isdir(path2):
     os.mkdir(path2)
+if not os.path.isdir(path3):
+    os.mkdir(path3)
+if not os.path.isdir(path4):
+    os.mkdir(path4)
 (SAMPLES,) = glob_wildcards("host_rm_reads/splited_reads/{sample}.host_rm_R1.fq")
 rule all:
     input:

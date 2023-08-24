@@ -1,3 +1,9 @@
+import os
+path = 'smash_files/kreports'
+try:
+   os.makedirs(path)
+except FileExistsError:
+   pass
 SAMPLES, = glob_wildcards("host_rm_reads/splited_reads/{sample}.host_rm_R1.fq")
 rule all:
    input:expand("smash_files/kreports/{sample}.kreport.txt",sample=SAMPLES)
@@ -16,12 +22,13 @@ rule gather:
    params:
       threshold=1
    shell:
-      " sourmash gather {input.sig} {input.db} -o {output} --threshold-bp={params.threshold}"
+      "sourmash gather {input.sig} {input.db} -o {output} --threshold-bp={params.threshold}"
    
 rule taxonomy:
    input:
       gather="smash_files/{sample}.gather.csv",
       taxonomy="/group/ctbrowngrp/sourmash-db/gtdb-rs207/gtdb-rs207.taxonomy.csv"
    output:"smash_files/kreports/{sample}.kreport.txt"
+   params:"smash_files/kreports/{sample}"
    shell:
-      "sourmash tax metagenome -g {input.gather} -t {input.taxonomy}  -F kreport -o {output}"
+      "sourmash tax metagenome -g {input.gather} -t {input.taxonomy}  -F kreport -o {params}"
